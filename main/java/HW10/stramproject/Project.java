@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 
 public class Project {
@@ -17,7 +18,16 @@ public class Project {
         Map<Integer, List<String>> nameGrouping = strings.stream()
                 .collect(groupingBy(String::length));
 
+
+
         System.out.println(nameGrouping);
+
+        Map<Integer, Long> count = strings.stream()
+                .collect(groupingBy(String::length, counting()));
+
+        System.out.println(count);
+
+
 
 
     }
