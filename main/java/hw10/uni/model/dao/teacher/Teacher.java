@@ -1,5 +1,7 @@
-package hw10.uni.model.dao;
+package hw10.uni.model.dao.teacher;
 
+
+import hw10.uni.model.dao.address.Address;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -27,6 +29,11 @@ public class Teacher {
 
     @Column(name = "birth_day")
     private LocalDate birthDay;
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "address")
+    private Address address;
+
     // constructor
     public Teacher(String firstName, String lastName, String teacherCode, double salary, String birthDay) {
         this.firstName = firstName;
@@ -41,6 +48,14 @@ public class Teacher {
 
     // setter and getter
 
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public Long getId() {
         return id;

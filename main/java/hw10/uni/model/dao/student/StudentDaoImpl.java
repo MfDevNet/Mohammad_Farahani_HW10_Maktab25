@@ -1,9 +1,10 @@
-package hw10.uni.model.dao;
+package hw10.uni.model.dao.student;
 
 import hw10.uni.model.dbconnector.DbConnector;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.management.Query;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,23 +47,23 @@ public class StudentDaoImpl implements StudentDAO {
     }
 
     @Override
-    public void update(String id,Student student) {
+    public void update(String id, Student student) {
         Session session = DbConnector.getSession();
 
         Student st = find(id);
-        Transaction transaction =session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         if (st != null) {
             try {
-                session.createQuery("update Student set firstName = '"+student.getFirstName() +"', lastName =  '"+student.getLastName()+"' where id = "+id).executeUpdate();
+                session.createQuery("update Student set firstName = '" + student.getFirstName() + "', lastName =  '" + student.getLastName() + "' where id = " + id).executeUpdate();
                 transaction.commit();
                 session.close();
 
 
-            }catch (Throwable t){
+            } catch (Throwable t) {
                 transaction.rollback();
                 System.out.println("Can not Update Student" + st);
                 session.close();
-                throw  t;
+                throw t;
 
             }
 
@@ -78,8 +79,8 @@ public class StudentDaoImpl implements StudentDAO {
         Student st = null;
         System.out.println(args[0]);
         if (args.length == 1) {
+
             st = (Student) session.createQuery("select st from Student st where st.id=" + args[0]).getSingleResult();
-            System.out.println(st);
             session.close();
 
             return st;
@@ -107,31 +108,53 @@ public class StudentDaoImpl implements StudentDAO {
 
         if (!args[0].equals("") && !args[1].equals("")) {
             studentList = session.createQuery("from Student st where st.firstName like '" + args[0] + "%' and st.lastName like '" + args[1] + "%'").list();
-            System.out.println(studentList);
+//            System.out.println(studentList);
             session.close();
 
             return studentList;
 
         } else if (!args[0].equals("")) {
             studentList = session.createQuery("from Student where firstName like '" + args[0] + "%'").list();
-            System.out.println(studentList);
+//            System.out.println(studentList);
             session.close();
 
             return studentList;
 
         } else if (!args[1].equals("")) {
             studentList = session.createQuery("from Student where lastName like '" + args[1] + "%'").list();
-            System.out.println(studentList);
+//            System.out.println(studentList);
             session.close();
 
             return studentList;
 
         } else {
             studentList = session.createQuery("from Student ").list();
-            System.out.println(studentList);
+//            System.out.println(studentList);
             session.close();
 
             return studentList;
         }
     }
+
+    public List<Student> addressFind(String city) {
+        Session session = DbConnector.getSession();
+
+        List<Student> studentList = new ArrayList<>();
+        studentList = session.createQuery("select s from Student s where s.address.city = 'tehran'").list();
+//        studentList = session.createQuery("select s from Student s where s.address.city ='" + city+"'").list();
+        session.close();
+
+        return studentList;
+
+
+    }
+
+    @Override
+    public List<Student> studentList(String query) {
+        Session session = DbConnector.getSession();
+        List<Student > students=new ArrayList<>();
+        students=  session.createQuery(query).getResultList();
+        return students;
+    }
 }
+

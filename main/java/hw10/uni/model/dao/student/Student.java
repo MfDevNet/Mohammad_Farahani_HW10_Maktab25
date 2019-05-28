@@ -1,11 +1,14 @@
-package hw10.uni.model.dao;
+package hw10.uni.model.dao.student;
 
+
+import hw10.uni.model.dao.address.Address;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "students")
-public class Student {
+public class Student implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +20,15 @@ public class Student {
     @Column(name = "last_name")
     private String lastName;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address")
+    private Address address;
+
     // constructor
 
 
-    public Student(String firstName, String lastName) {
+    public Student(String firstName, String lastName)
+    {
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -30,6 +38,14 @@ public class Student {
 
     // setter and getter
 
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public Long getId() {
         return id;
@@ -65,6 +81,7 @@ public class Student {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", address=" + address +
                 '}';
     }
 }

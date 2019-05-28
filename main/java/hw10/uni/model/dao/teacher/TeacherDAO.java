@@ -1,4 +1,4 @@
-package hw10.uni.model.dao;
+package hw10.uni.model.dao.teacher;
 
 import java.util.List;
 
@@ -11,4 +11,6 @@ public interface TeacherDAO {
     public List<Teacher> listTh(Teacher teacher);
     public List<Teacher> maxminsalary();
     public List<Teacher> youngoldbirthday();
+    public List<Teacher> teacherList(String query);
+
 }

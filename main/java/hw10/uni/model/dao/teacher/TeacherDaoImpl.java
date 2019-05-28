@@ -1,4 +1,4 @@
-package hw10.uni.model.dao;
+package hw10.uni.model.dao.teacher;
 
 import hw10.uni.model.dbconnector.DbConnector;
 import org.hibernate.Session;
@@ -151,6 +151,14 @@ public class TeacherDaoImpl implements TeacherDAO {
         System.out.println(t);
         return t;
 
+    }
+
+    @Override
+    public List<Teacher> teacherList(String query) {
+        Session session = DbConnector.getSession();
+        List<Teacher> teachers=new ArrayList<>();
+        teachers=  session.createQuery(query).getResultList();
+        return teachers;
     }
 
 
